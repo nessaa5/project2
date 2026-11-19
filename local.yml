@@ -138,6 +138,11 @@
         path: /etc/sudoers.d/90-course-nopasswd
         state: absent
 
+    - name: remove the cloud-init passwordless sudo rule
+      ansible.builtin.file:
+        path: /etc/sudoers.d/90-clout-init-users
+        state: absent
+
     # TODO: Remove the unexpected SUID-root binary
     #   (module: ansible.builtin.file  state: absent  — or fix the mode)
     - name: Remove the SUID-root binary
@@ -166,6 +171,13 @@
     #     ansible-galaxy collection install community.mysql
     #     sudo apt-get install -y python3-pymysql
     #
+
+    - name: mysql running and enabled
+      ansible.builtin.service:
+        name: mysql
+        state: started
+        enabled: true
+
     # TODO: Scope the webapp account to only what it needs (see the inventory)
     - name: Scope webapp to its own db
       community.mysql.mysql_user:
