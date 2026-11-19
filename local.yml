@@ -45,7 +45,7 @@
         path: /etc/ssh/sshd_config.d/99-course.conf
         regexp: 'PasswordAuthentication'
         line: 'PasswordAuthentication no'
-        notify: Restart ssh
+      notify: Restart ssh
 
     # Host firewall (UFW) — active, default-deny incoming, allow only SSH
     #   (module: community.general.ufw, or ansible.builtin.command as a last resort)
@@ -122,21 +122,6 @@
         path: /var/www/app/tmp
         mode: "0755"
 
-  handlers:
-    - name: Restart ssh
-      ansible.builtin.service:
-        name: ssh
-        state: restarted
-
-    - name: reload systemd
-      ansible.builtin.systemd_service:
-        daemon_reload: true
-
-    - name: Restart fail2ban
-      ansible.builtin.service:
-        name: fail2ban
-        state: restarted
-
     # ================= Domain B — Users / privilege escalation ===========
     # TODO: Remove or lock the unauthorized sudo account
     #   (module: ansible.builtin.user  state: absent  — or lock the password)
@@ -210,9 +195,24 @@
         login_unix_socket: /var/run/mysqld/mysqld.sock
         state: absent
 
-    - name: REmove anonymous acc
+    - name: Remove anonymous acc
       community.mysql.mysql_user:
         name: ""
         host: localhost
         login_unix_socket: /var/run/mysqld/mysqld.sock
         state: absent
+
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+    - name: reload systemd
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+    - name: Restart fail2ban
+      ansible.builtin.service:
+        name: fail2ban
+        state: restarted
