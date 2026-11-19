@@ -38,7 +38,7 @@
         path: /etc/ssh/sshd_config.d/99-course.conf
         regexp: 'PermitRootLogin'
         line: 'PermitRootLogin no'
-        notify: Restart ssh
+      notify: Restart ssh
 
     - name: Disallow password auth - SSH
       ansible.builtin.lineinfile:
