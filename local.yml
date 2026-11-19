@@ -140,7 +140,7 @@
 
     - name: remove the cloud-init passwordless sudo rule
       ansible.builtin.file:
-        path: /etc/sudoers.d/90-clout-init-users
+        path: /etc/sudoers.d/90-cloud-init-users
         state: absent
 
     # TODO: Remove the unexpected SUID-root binary
@@ -185,7 +185,7 @@
         host: "%"
         priv: "inventorydb.*:SELECT,INSERT,UPDATE,DELETE"
         append_privs: false
-        login_unix_socket: /var/run/mysqld/mysql.sock
+        login_unix_socket: /var/run/mysqld/mysqld.sock
         state: present
 
     # TODO: Scope the reporting account to read-only on its DB
